@@ -4,10 +4,35 @@
   <meta charset="UTF-8">
   <title>CEO Site EROLLS 2002 – Pali</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #e0e0e0;
+    }
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -25,21 +50,32 @@
 
   <script>
     fetch('data.json')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to load data.json");
+        return res.json();
+      })
       .then(data => {
         const tbody = document.getElementById('tableBody');
         data.forEach(row => {
-          const partNum = row.part_no.padStart(3, '0');
-          const fileName = `A${row.ac_no}P${partNum}.pdf`;
+          const acNo = row["Old AC No."];
+          const acName = row["Old AC Name"];
+          const partNo = String(row["Old Part No."]).padStart(3, '0');
+          const partName = row["Old Part Detail"].trim();
+          const fileName = `A${acNo}P${partNo}.pdf`;
           const link = `pdfs/${fileName}`;
+
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td>${row.ac_name}</td>
-            <td>${partNum}</td>
-            <td><a href="${link}" target="_blank">${row.part_name}</a></td>
+            <td>${acName}</td>
+            <td>${partNo}</td>
+            <td><a href="${link}" target="_blank">${partName}</a></td>
           `;
           tbody.appendChild(tr);
         });
+      })
+      .catch(err => {
+        document.body.innerHTML += `<p style="color:red;">Error loading data: ${err.message}</p>`;
+        console.error(err);
       });
   </script>
 </body>
