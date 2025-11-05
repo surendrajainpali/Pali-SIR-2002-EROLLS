@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>CEO Site EROLLS 2002 – Pali</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>CEO Site EROLLS 2002 – Pali</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name of AC</th>
+        <th>Part No.</th>
+        <th>Part Name</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById('tableBody');
+        data.forEach(row => {
+          const partNum = row.part_no.padStart(3, '0');
+          const fileName = `A${row.ac_no}P${partNum}.pdf`;
+          const link = `pdfs/${fileName}`;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${row.ac_name}</td>
+            <td>${partNum}</td>
+            <td><a href="${link}" target="_blank">${row.part_name}</a></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  </script>
+</body>
+</html>
