@@ -1,40 +1,3 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-  <meta charset="UTF-8">
-  <title>CEO Site EROLLS 2002 – Pali</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background-color: #f9f9f9;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #e0e0e0;
-    }
-    a {
-      color: #0066cc;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
 <body>
   <h1>CEO Site EROLLS 2002 – Pali</h1>
   <table>
@@ -48,6 +11,7 @@
     <tbody id="tableBody"></tbody>
   </table>
 
+  <!-- ✅ Move script here -->
   <script>
     fetch('data.json')
       .then(response => {
@@ -81,4 +45,3 @@
       });
   </script>
 </body>
-</html>
