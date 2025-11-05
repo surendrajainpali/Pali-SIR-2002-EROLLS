@@ -50,9 +50,11 @@
 
   <script>
     fetch('data.json')
-      .then(res => {
-        if (!res.ok) throw new Error("Failed to load data.json");
-        return res.json();
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to load data.json");
+        }
+        return response.json();
       })
       .then(data => {
         const tbody = document.getElementById('tableBody');
@@ -73,9 +75,9 @@
           tbody.appendChild(tr);
         });
       })
-      .catch(err => {
-        document.body.innerHTML += `<p style="color:red;">Error loading data: ${err.message}</p>`;
-        console.error(err);
+      .catch(error => {
+        document.body.innerHTML += `<p style="color:red;">Error loading data: ${error.message}</p>`;
+        console.error(error);
       });
   </script>
 </body>
