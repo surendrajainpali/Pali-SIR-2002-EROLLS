@@ -11,7 +11,7 @@
     }
     h1 {
       text-align: center;
-      color: #003366; /* Dark blue */
+      color: #003366;
       margin-bottom: 10px;
     }
     .search-container {
@@ -23,12 +23,12 @@
       color: #333;
       margin-right: 10px;
     }
-    .search-container input {
+    .search-container select {
       padding: 8px;
-      width: 300px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      min-width: 220px;
     }
     table {
       width: 100%;
@@ -78,16 +78,26 @@
   <h1>पाली जिले की विगत गहन पुनरीक्षण 2002 की मतदाता सूचियाँ</h1>
 
   <div class="search-container">
-    <label for="searchInput">कृपया विगत गहन पुनरीक्षण 2002 के विधानसभा क्षेत्र का चयन करें:</label>
-    <input type="text" id="searchInput" placeholder="AC नाम या Part नाम लिखें...">
+    <label for="acSelect">कृपया विगत गहन पुनरीक्षण 2002 के विधानसभा क्षेत्र का चयन करें:</label>
+    <select id="acSelect">
+      <option value="">-- सभी क्षेत्र --</option>
+      <option value="रायपुर">160 - रायपुर</option>
+      <option value="सोजत">161 - सोजत</option>
+      <option value="खारची">162 - खारची</option>
+      <option value="देसूरी">163 - देसूरी</option>
+      <option value="पाली">164 - पाली</option>
+      <option value="सुमेरपुर">165 - सुमेरपुर</option>
+      <option value="बाली">166 - बाली</option>
+    </select>
   </div>
 
   <table>
     <thead>
       <tr>
         <th>Old AC No.</th>
-        <th>Part No.</th>
-        <th>Part Name</th>
+        <th>Old AC Name</th>
+        <th>Old Part No.</th>
+        <th>Old Part Detail</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
@@ -117,6 +127,7 @@
       tbody.innerHTML = '';
       rows.forEach(row => {
         const acNo = row["Old AC No."];
+        const acName = row["Old AC Name"];
         const partNo = String(row["Old Part No."]).padStart(3, '0');
         const partName = row["Old Part Detail"].trim();
         const fileName = `A${acNo}P${partNo}.pdf`;
@@ -125,6 +136,7 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${acNo}</td>
+          <td>${acName}</td>
           <td>${partNo}</td>
           <td><a href="${link}" target="_blank">${partName}</a></td>
         `;
@@ -132,12 +144,11 @@
       });
     }
 
-    document.getElementById('searchInput').addEventListener('input', function () {
-      const query = this.value.trim().toLowerCase();
-      const filtered = allRows.filter(row =>
-        row["Old AC Name"].toLowerCase().includes(query) ||
-        row["Old Part Detail"].toLowerCase().includes(query)
-      );
+    document.getElementById('acSelect').addEventListener('change', function () {
+      const selectedAC = this.value;
+      const filtered = selectedAC
+        ? allRows.filter(row => row["Old AC Name"] === selectedAC)
+        : allRows;
       renderTable(filtered);
     });
   </script>
