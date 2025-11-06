@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>CEO Site EROLLS 2002 – Pali</title>
+  <title>पाली जिले की विगत गहन पुनरीक्षण 2002 की मतदाता सूचियाँ</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -11,8 +11,24 @@
     }
     h1 {
       text-align: center;
-      color: #2c3e50;
+      color: #003366; /* Dark blue */
+      margin-bottom: 10px;
+    }
+    .search-container {
+      text-align: center;
       margin-bottom: 20px;
+    }
+    .search-container label {
+      font-size: 16px;
+      color: #333;
+      margin-right: 10px;
+    }
+    .search-container input {
+      padding: 8px;
+      width: 300px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
     table {
       width: 100%;
@@ -59,7 +75,13 @@
   </style>
 </head>
 <body>
-  <h1>CEO Site EROLLS 2002 – Pali</h1>
+  <h1>पाली जिले की विगत गहन पुनरीक्षण 2002 की मतदाता सूचियाँ</h1>
+
+  <div class="search-container">
+    <label for="searchInput">कृपया विगत गहन पुनरीक्षण 2002 के विधानसभा क्षेत्र का चयन करें:</label>
+    <input type="text" id="searchInput" placeholder="AC नाम या Part नाम लिखें...">
+  </div>
+
   <table>
     <thead>
       <tr>
@@ -72,6 +94,8 @@
   </table>
 
   <script>
+    let allRows = [];
+
     fetch('data.json')
       .then(response => {
         if (!response.ok) {
@@ -80,27 +104,42 @@
         return response.json();
       })
       .then(data => {
-        const tbody = document.getElementById('tableBody');
-        data.forEach(row => {
-          const acNo = row["Old AC No."];
-          const partNo = String(row["Old Part No."]).padStart(3, '0');
-          const partName = row["Old Part Detail"].trim();
-          const fileName = `A${acNo}P${partNo}.pdf`;
-          const link = `pdfs/${fileName}`;
-
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${acNo}</td>
-            <td>${partNo}</td>
-            <td><a href="${link}" target="_blank">${partName}</a></td>
-          `;
-          tbody.appendChild(tr);
-        });
+        allRows = data;
+        renderTable(data);
       })
       .catch(error => {
         document.body.innerHTML += `<p style="color:red;">Error loading data: ${error.message}</p>`;
         console.error(error);
       });
+
+    function renderTable(rows) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      rows.forEach(row => {
+        const acNo = row["Old AC No."];
+        const partNo = String(row["Old Part No."]).padStart(3, '0');
+        const partName = row["Old Part Detail"].trim();
+        const fileName = `A${acNo}P${partNo}.pdf`;
+        const link = `pdfs/${fileName}`;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${acNo}</td>
+          <td>${partNo}</td>
+          <td><a href="${link}" target="_blank">${partName}</a></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const query = this.value.trim().toLowerCase();
+      const filtered = allRows.filter(row =>
+        row["Old AC Name"].toLowerCase().includes(query) ||
+        row["Old Part Detail"].toLowerCase().includes(query)
+      );
+      renderTable(filtered);
+    });
   </script>
 </body>
 </html>
