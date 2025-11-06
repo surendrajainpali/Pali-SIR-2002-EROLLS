@@ -1,9 +1,69 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>CEO Site EROLLS 2002 – Pali</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background-color: #f4f6f8;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px 12px;
+      text-align: left;
+      background-color: #fff;
+    }
+    th {
+      background-color: #e8edf2;
+      font-weight: bold;
+      color: #333;
+    }
+    tr:hover td {
+      background-color: #f1f9ff;
+    }
+    a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th {
+        position: sticky;
+        top: 0;
+        background-color: #e8edf2;
+      }
+      td {
+        border: none;
+        border-bottom: 1px solid #ccc;
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
 <body>
   <h1>CEO Site EROLLS 2002 – Pali</h1>
   <table>
     <thead>
       <tr>
-        <th>Name of AC</th>
+        <th>Old AC No.</th>
         <th>Part No.</th>
         <th>Part Name</th>
       </tr>
@@ -11,7 +71,6 @@
     <tbody id="tableBody"></tbody>
   </table>
 
-  <!-- ✅ Move script here -->
   <script>
     fetch('data.json')
       .then(response => {
@@ -24,7 +83,6 @@
         const tbody = document.getElementById('tableBody');
         data.forEach(row => {
           const acNo = row["Old AC No."];
-          const acName = row["Old AC Name"];
           const partNo = String(row["Old Part No."]).padStart(3, '0');
           const partName = row["Old Part Detail"].trim();
           const fileName = `A${acNo}P${partNo}.pdf`;
@@ -32,7 +90,7 @@
 
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td>${acName}</td>
+            <td>${acNo}</td>
             <td>${partNo}</td>
             <td><a href="${link}" target="_blank">${partName}</a></td>
           `;
@@ -45,3 +103,4 @@
       });
   </script>
 </body>
+</html>
