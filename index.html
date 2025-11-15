@@ -24,12 +24,14 @@
       color: #333;
       margin-right: 10px;
     }
-    .search-container select {
+    .search-container select,
+    .search-container input {
       padding: 8px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 4px;
       min-width: 220px;
+      margin: 5px;
     }
     table {
       width: 100%;
@@ -100,15 +102,20 @@
       <option value="सुमेरपुर">165 - सुमेरपुर</option>
       <option value="बाली">166 - बाली</option>
     </select>
+
+    <label for="partSearch">पुराने भाग का विवरण:</label>
+    <input type="text" id="partSearch" placeholder="भाग विवरण खोजें...">
+
+    <button id="resetBtn">फ़िल्टर रीसेट</button>
   </div>
 
   <table>
     <thead>
       <tr>
-        <th>Old AC No.</th>
-        <th>Old AC Name</th>
-        <th>Old Part No.</th>
-        <th>Old Part Detail</th>
+        <th>पुराना विधानसभा क्रमांक</th>
+        <th>पुराना विधानसभा नाम</th>
+        <th>पुराना भाग क्रमांक</th>
+        <th>पुराना भाग विवरण</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
@@ -159,12 +166,28 @@
       });
     }
 
-    document.getElementById('acSelect').addEventListener('change', function () {
-      const selectedAC = this.value;
-      const filtered = selectedAC
-        ? allRows.filter(row => row["Old AC Name"] === selectedAC)
-        : allRows;
+    function applyFilters() {
+      const selectedAC = document.getElementById('acSelect').value;
+      const partSearch = document.getElementById('partSearch').value.toLowerCase();
+
+      const filtered = allRows.filter(row => {
+        const matchesAC = selectedAC ? row["Old AC Name"] === selectedAC : true;
+        const matchesPart = partSearch
+          ? row["Old Part Detail"].toLowerCase().includes(partSearch)
+          : true;
+        return matchesAC && matchesPart;
+      });
+
       renderTable(filtered);
+    }
+
+    document.getElementById('acSelect').addEventListener('change', applyFilters);
+    document.getElementById('partSearch').addEventListener('input', applyFilters);
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.getElementById('acSelect').value = '';
+      document.getElementById('partSearch').value = '';
+      renderTable(allRows);
     });
   </script>
 </body>
