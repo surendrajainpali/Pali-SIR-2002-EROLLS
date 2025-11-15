@@ -33,6 +33,9 @@
       min-width: 220px;
       margin: 5px;
     }
+    .search-row {
+      margin: 10px 0;
+    }
     table {
       width: 100%;
       border-collapse: separate;
@@ -91,22 +94,31 @@
   <h1>पाली जिले की विगत गहन पुनरीक्षण 2002 की मतदाता सूचियाँ</h1>
 
   <div class="search-container">
-    <label for="acSelect">कृपया विगत गहन पुनरीक्षण 2002 के विधानसभा क्षेत्र का चयन करें:</label>
-    <select id="acSelect">
-      <option value="">-- सभी क्षेत्र --</option>
-      <option value="रायपुर">160 - रायपुर</option>
-      <option value="सोजत">161 - सोजत</option>
-      <option value="खारची">162 - खारची</option>
-      <option value="देसूरी">163 - देसूरी</option>
-      <option value="पाली">164 - पाली</option>
-      <option value="सुमेरपुर">165 - सुमेरपुर</option>
-      <option value="बाली">166 - बाली</option>
-    </select>
+    <!-- First row: AC dropdown -->
+    <div class="search-row">
+      <label for="acSelect">कृपया विगत गहन पुनरीक्षण 2002 के विधानसभा क्षेत्र का चयन करें:</label>
+      <select id="acSelect">
+        <option value="">-- सभी क्षेत्र --</option>
+        <option value="रायपुर">160 - रायपुर</option>
+        <option value="सोजत">161 - सोजत</option>
+        <option value="खारची">162 - खारची</option>
+        <option value="देसूरी">163 - देसूरी</option>
+        <option value="पाली">164 - पाली</option>
+        <option value="सुमेरपुर">165 - सुमेरपुर</option>
+        <option value="बाली">166 - बाली</option>
+      </select>
+    </div>
 
-    <label for="partSearch">पुराने भाग का विवरण:</label>
-    <input type="text" id="partSearch" placeholder="भाग विवरण खोजें...">
+    <!-- Second row: Old Part Detail input -->
+    <div class="search-row">
+      <label for="partSearch">पुराने भाग का विवरण:</label>
+      <input type="text" id="partSearch" placeholder="भाग विवरण खोजें...">
+    </div>
 
-    <button id="resetBtn">फ़िल्टर रीसेट</button>
+    <!-- Reset button -->
+    <div class="search-row">
+      <button id="resetBtn">फ़िल्टर रीसेट</button>
+    </div>
   </div>
 
   <table>
